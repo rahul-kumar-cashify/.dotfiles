@@ -43,10 +43,10 @@ if command -v bfs >/dev/null 2>&1; then # Check if bfs is installed
 fi
 
 # FZF Completion Setup — With Trigger Disabled for Specific Commands
-_fzf_complete_cd_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_dir_completion
-}
-complete -o bashdefault -o dirnames -o nospace -F _fzf_complete_cd_notrigger cd
+# _fzf_complete_cd_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_dir_completion
+# }
+# complete -o bashdefault -o dirnames -o nospace -F _fzf_complete_cd_notrigger cd
 
 _fzf_complete_ls_notrigger() {
   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
@@ -77,3 +77,4 @@ _fzf_complete_ssh_notrigger() {
   FZF_COMPLETION_TRIGGER='' _fzf_host_completion
 }
 complete -F _fzf_complete_ssh_notrigger ssh
+

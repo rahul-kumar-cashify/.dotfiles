@@ -6,10 +6,6 @@ case $- in
 *) return ;;
 esac
 
-# keep at the first of file -- wierd bugs
-# bash_completion
-[[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
-
 # ---------------------- local utility functions ---------------------
 
 _have() { type "$1" &>/dev/null; }
@@ -143,6 +139,3 @@ ww() {
 
 # --------------------------- smart prompt ---------------------------
 source prompt_setup.sh # source PS1 
-
-# ---------------------------- FZF ----------------------------
-source "$HOME/.dotfiles/scripts/fzf_custom_completions.sh"

@@ -23,11 +23,24 @@ return {
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			require("mason-lspconfig").setup({
-				ensure_installed = {},
-				automatic_installation = true,
+				ensure_installed = {
+					"lua_ls", --  Lua
+					"bashls", --  Bash
+					"pyright", --  Python
+					"ts_ls", --  JS/TS
+					"yamlls", --  YAML
+					"dockerls", --  Docker
+					"docker_compose_language_service", --  Docker-Compose
+					"html", --  HTML
+					"cssls", --  CSS
+					"emmet_ls", --  Emmet           (HTML/CSS  snippets)
+					"vimls", --  Vimscript
+					"tailwindcss", --  TailwindCSS
+					"gradle_ls", --  Gradle
+				},
 				handlers = {
 					function(server_name)
-						require("lspconfig")[server_name].setup({ capabilites = capabilities })
+						require("lspconfig")[server_name].setup({ capabilities = capabilities })
 					end,
 				},
 			})
@@ -43,13 +56,12 @@ return {
 		"saghen/blink.cmp",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
-			-- "giuxtaposition/blink-cmp-copilot",
+			"giuxtaposition/blink-cmp-copilot",
+			"zbirenbaum/copilot.lua",
 		},
-        version = '1.*',
+		version = "1.*",
 		opts = {
-			keymap = { preset = "default",
-            ['<CR>'] = { 'accept', 'fallback' }
-            },
+			keymap = { preset = "default", ["<CR>"] = { "accept", "fallback" } },
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
@@ -57,42 +69,51 @@ return {
 			-- Displays a preview of the selected item on the current line
 			signature = { enabled = true },
 			sources = {
-				default = { "lsp", 
-                "path", 
-                "snippets", 
-                "buffer", 
-                -- "copilot" 
-            },
+				default = {
+					"lsp",
+					"path",
+					"snippets",
+					"buffer",
+					"copilot",
+				},
 				providers = {
-					-- copilot = {
-					-- 	name = "copilot",
-					-- 	module = "blink-cmp-copilot",
-					-- 	async = true,
-					-- },
+					copilot = {
+						name = "copilot",
+						module = "blink-cmp-copilot",
+						score_offset = 50,
+						async = true,
+						transform_items = function(ctx, items)
+							for _, item in ipairs(items) do
+								item.kind_icon = ""
+								item.kind_name = "Copilot"
+							end
+							return items
+						end,
+					},
 				},
-			},
-			completion = {
-				accept = {},
-				documentation = {
-					auto_show = true,
-					auto_show_delay_ms = 100,
-				},
-                list = {
-                     selection = { 
-                          preselect = true,
-                          auto_insert = true,
-                     }
-                }
 			},
 		},
 	},
-	-- {
-	-- 	"zbirenbaum/copilot.lua",
-	-- 	config = function()
-	-- 		require("copilot").setup({
-	-- 			suggestion = { enabled = false },
-	-- 			panel = { enabled = false },
-	-- 		})
-	-- 	end,
-	-- },
+	{
+		"zbirenbaum/copilot.lua",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+				server_opts_overrides = {
+					trace = "verbose",
+					settings = {
+						advanced = {
+							listCount = 10, -- #completions for panel
+							inlineSuggestCount = 3, -- #completions for getCompletions
+						},
+					},
+				},
+				workspace_folders = {
+					"~/dev/workspace/",
+					"~/.dotfiles/",
+				},
+			})
+		end,
+	},
 }
