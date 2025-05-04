@@ -37,6 +37,7 @@ return {
 					"vimls", --  Vimscript
 					"tailwindcss", --  TailwindCSS
 					"gradle_ls", --  Gradle
+                    "ast_grep"
 				},
 				handlers = {
 					function(server_name)

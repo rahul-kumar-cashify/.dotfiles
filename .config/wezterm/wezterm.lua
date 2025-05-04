@@ -28,6 +28,9 @@ config.font = wezterm.font_with_fallback({
 
 -- COLOR SCHEME
 config.color_scheme = "midnight-in-mojave"
+-- config.color_scheme = 'Batman'
+
+config.window_decorations = "NONE"
 
 -- TAB BAR CONFIGURATION
 config.hide_tab_bar_if_only_one_tab = true

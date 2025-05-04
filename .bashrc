@@ -139,3 +139,6 @@ ww() {
 
 # --------------------------- smart prompt ---------------------------
 source prompt_setup.sh # source PS1 
+source docker-completion.sh
+source git-completion.sh
+

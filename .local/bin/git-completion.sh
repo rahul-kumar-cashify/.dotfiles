@@ -1,17 +1,23 @@
 #!/bin/bash
 
-COMPLETION_DIR="$HOME/.local/share/bash-completion"
+COMPLETION_DIR="$HOME/.local/share/bash-completion/completion"
 GIT_VERSION=$(git --version | awk '{print $3}')
 COMPLETION_SCRIPT_PATH="$COMPLETION_DIR/git-completion-$GIT_VERSION.bash"
+URL="https://raw.githubusercontent.com/git/git/v$GIT_VERSION/contrib/completion/git-completion.bash"
 
-# Check if the script is readable. If not, fetch it and then give instructions to source it.
-if [ ! -r "$COMPLETION_SCRIPT_PATH" ]; then
-  mkdir -p "$COMPLETION_DIR"
-  curl "https://raw.githubusercontent.com/git/git/$GIT_VERSION/contrib/completion/git-completion.bash" -o "$COMPLETION_SCRIPT_PATH" 
+# Check if the downloaded file contains "404: Not Found"
+if grep -q "404: Not Found" "$COMPLETION_SCRIPT_PATH"; then
+  rm -f "$COMPLETION_SCRIPT_PATH"  # Remove invalid file
+  exit 1
 fi
 
-# Echo the instruction for the user to source the script
-echo "Git completion script downloaded. To enable it, run:"
-source "$COMPLETION_SCRIPT_PATH"
+# Check if the script is readable. If not, fetch it.
+if [ ! -r "$COMPLETION_SCRIPT_PATH" ]; then
+  mkdir -p "$COMPLETION_DIR"
+  curl -fsSL "$URL" -o "$COMPLETION_SCRIPT_PATH"
+fi
 
+
+# Source the script
+source "$COMPLETION_SCRIPT_PATH"
 
