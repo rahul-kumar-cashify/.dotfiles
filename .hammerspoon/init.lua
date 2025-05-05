@@ -62,7 +62,7 @@ bindAppLaunch({ "cmd" }, "5", "dbeaver")
 bindAppLaunch({ "cmd" }, "6", "visual studio code")
 bindAppLaunch({ "cmd" }, "7", "")
 bindAppLaunch({ "cmd" }, "8", "tell Finder to reopen activate")
-bindAppLaunch({ "cmd" }, "9", "IntelliJ IDEA CE")
+bindAppLaunch({ "cmd" }, "9", "Slack")
 
 -- Reopen Finder
 hs.hotkey.bind({ "cmd" }, "0", function()
