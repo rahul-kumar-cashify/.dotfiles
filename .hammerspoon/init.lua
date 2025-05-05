@@ -1,82 +1,84 @@
 -- Reference Hammerspoon
 hs = hs
 
--- Paths to SpoonInstall
-local spoonInstallPath = hs.fs.pathToAbsolute("~/.hammerspoon/Spoons/SpoonInstall.spoon")
-local spoonZipPath = hs.fs.pathToAbsolute("~/.hammerspoon/Spoons/SpoonInstall.spoon.zip")
+
+local spoonDir = os.getenv("HOME") .. "/.hammerspoon/Spoons"
+local spoonInstallPath = spoonDir .. "/SpoonInstall.spoon"
+local spoonZipPath = spoonInstallPath .. ".zip"
 local url = "https://raw.githubusercontent.com/Hammerspoon/Spoons/master/Spoons/SpoonInstall.spoon.zip"
 
--- Download and install SpoonInstall if not already installed
-if not hs.fs.dir(spoonInstallPath) then
-	local status, body = hs.http.get(url, nil)
-	if status == 200 then
-		-- Save the zip file
-		local file = io.open(spoonZipPath, "wb")
-		file:write(body)
-		file:close()
-
-		-- Create directory and unzip
-		hs.fs.mkdir("~/.hammerspoon/Spoons")
-		hs.fs.unzip(spoonZipPath, "~/.hammerspoon/Spoons")
-
-		-- Remove zip file
-		hs.fs.remove(spoonZipPath)
-
-		hs.alert.show("SpoonInstall installed!")
-	else
-		hs.alert.show("Failed to download SpoonInstall.")
-	end
-else
-	hs.alert.show("SpoonInstall is already installed.")
+-- Ensure the directory exists before writing
+if not hs.fs.attributes(spoonDir) then
+    hs.fs.mkdir(spoonDir)
 end
+
+-- Check if SpoonInstall.spoon exists
+if not hs.fs.attributes(spoonInstallPath) then
+    -- Download the ZIP
+    local status, body = hs.http.get(url, nil)
+    if status == 200 then
+        -- Save the zip
+        local file = io.open(spoonZipPath, "wb")
+        if file then
+            file:write(body)
+            file:close()
+
+            -- Unzip (requires system 'unzip' command)
+            hs.task.new("/usr/bin/unzip", function(exitCode, stdOut, stdErr)
+                if exitCode == 0 then
+                    hs.fs.remove(spoonZipPath)
+                    hs.alert.show("SpoonInstall downloaded and installed.")
+                else
+                    hs.alert.show("Unzip failed: " .. stdErr)
+                end
+            end, {spoonZipPath, "-d", spoonDir}):start()
+        else
+            hs.alert.show("Failed to open file for writing: " .. spoonZipPath)
+        end
+    else
+        hs.alert.show("Failed to download SpoonInstall: HTTP " .. tostring(status))
+    end
+end
+
 
 -- Load SpoonInstall
 hs.loadSpoon("SpoonInstall")
 
--- === Application Launch Key Bindings ===
-hs.hotkey.bind({ "cmd" }, "1", function()
-	hs.application.launchOrFocus("WezTerm")
-end)
+--------------------------------------------------------------------------------
+-- Application Launcher
+--------------------------------------------------------------------------------
 
-hs.hotkey.bind({ "cmd" }, "2", function()
-	hs.application.launchOrFocus("intellij idea ce")
-end)
+function bindAppLaunch(mods, key, appName)
+	hs.hotkey.bind(mods, key, function()
+		hs.application.launchOrFocus(appName)
+	end)
+end
 
-hs.hotkey.bind({ "cmd" }, "3", function()
-	hs.application.launchOrFocus("Google Chrome")
-end)
+bindAppLaunch({ "cmd" }, "1", "WezTerm")
+bindAppLaunch({ "cmd" }, "2", "IntelliJ IDEA CE")
+bindAppLaunch({ "cmd" }, "3", "Google Chrome")
+bindAppLaunch({ "cmd" }, "4", "Postman")
+bindAppLaunch({ "cmd" }, "5", "dbeaver")
+bindAppLaunch({ "cmd" }, "6", "visual studio code")
+bindAppLaunch({ "cmd" }, "7", "")
+bindAppLaunch({ "cmd" }, "8", "tell Finder to reopen activate")
+bindAppLaunch({ "cmd" }, "9", "IntelliJ IDEA CE")
 
-hs.hotkey.bind({ "cmd" }, "4", function()
-	hs.application.launchOrFocus("Postman")
-end)
-
-hs.hotkey.bind({ "cmd" }, "5", function()
-	hs.application.launchOrFocus("dbeaver")
-end)
-
-hs.hotkey.bind({ "cmd" }, "7", function()
-	hs.application.launchOrFocus("visual studio code")
-end)
-
-hs.hotkey.bind({ "cmd" }, "8", function()
+-- Reopen Finder
+hs.hotkey.bind({ "cmd" }, "0", function()
 	hs.osascript.applescript('tell application "Finder" to reopen activate')
 end)
 
-hs.hotkey.bind({ "cmd" }, "9", function()
-	hs.application.launchOrFocus("slack")
-end)
+--------------------------------------------------------------------------------
+-- System Volume & Brightness Controls
+--------------------------------------------------------------------------------
 
-hs.hotkey.bind({ "cmd" }, "0", function()
-	hs.application.launchOrFocus("Notion")
-end)
-
--- === System Sound and Brightness Hotkeys ===
 local function sendSystemKey(key)
 	hs.eventtap.event.newSystemKeyEvent(key, true):post()
 	hs.eventtap.event.newSystemKeyEvent(key, false):post()
 end
 
--- Volume control
+-- Volume
 hs.hotkey.bind({ "ctrl", "cmd" }, "delete", function()
 	sendSystemKey("MUTE")
 end)
@@ -87,7 +89,7 @@ hs.hotkey.bind({ "ctrl", "cmd" }, "=", function()
 	sendSystemKey("SOUND_UP")
 end)
 
--- Brightness control
+-- Brightness
 hs.hotkey.bind({ "ctrl", "cmd" }, "0", function()
 	sendSystemKey("BRIGHTNESS_UP")
 end)
@@ -95,18 +97,24 @@ hs.hotkey.bind({ "ctrl", "cmd" }, "9", function()
 	sendSystemKey("BRIGHTNESS_DOWN")
 end)
 
--- === Window Management: WindowHalfsAndThirds Spoon ===
+--------------------------------------------------------------------------------
+-- Window Management
+--------------------------------------------------------------------------------
+
 spoon.SpoonInstall:andUse("WindowHalfsAndThirds", {
 	hotkeys = {
-		left_half = { { "ctrl", "cmd" }, "Left" },
-		right_half = { { "ctrl", "cmd" }, "Right" },
-		top_half = { { "ctrl", "cmd" }, "Up" },
-		bottom_half = { { "ctrl", "cmd" }, "Down" },
-		max_toggle = { { "ctrl", "cmd" }, "F" }, -- Maximize
+		left_half =    { { "ctrl", "cmd" }, "Left" },
+		right_half =   { { "ctrl", "cmd" }, "Right" },
+		top_half =     { { "ctrl", "cmd" }, "Up" },
+		bottom_half =  { { "ctrl", "cmd" }, "Down" },
+		max_toggle =   { { "ctrl", "cmd" }, "F" },
 	},
 })
 
--- === Clipboard Manager ===
+--------------------------------------------------------------------------------
+-- Clipboard Manager
+--------------------------------------------------------------------------------
+
 spoon.SpoonInstall:andUse("ClipboardTool", {
 	config = {
 		deduplicate = true,
@@ -124,14 +132,20 @@ hs.hotkey.bind({ "cmd", "shift" }, "V", function()
 	spoon.ClipboardTool:toggleClipboard()
 end)
 
--- === Toggle Dark Mode ===
-hs.hotkey.bind({ "ctrl", "cmd" }, "d", function()
+--------------------------------------------------------------------------------
+-- Toggle Dark Mode
+--------------------------------------------------------------------------------
+
+hs.hotkey.bind({ "ctrl", "cmd", "shift" }, "d", function()
 	hs.osascript.applescript([[
         tell application "System Events" to tell appearance preferences to set dark mode to not dark mode
     ]])
 end)
 
--- === Auto-Reload Config on Change ===
+--------------------------------------------------------------------------------
+-- Auto-reload Config on Change
+--------------------------------------------------------------------------------
+
 spoon.SpoonInstall:andUse("ReloadConfiguration", {
 	config = {
 		watch_paths = { hs.configdir },
@@ -139,5 +153,9 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", {
 	start = true,
 })
 
--- Final notification
+--------------------------------------------------------------------------------
+-- Final Notification
+--------------------------------------------------------------------------------
+
 hs.alert.show("Hammerspoon config loaded!")
+
