@@ -153,9 +153,40 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", {
 	start = true,
 })
 
+function muteOnLockOrSleep(eventType)
+  if eventType == hs.caffeinate.watcher.screensDidLock
+      or eventType == hs.caffeinate.watcher.sessionDidResignActive
+      or eventType == hs.caffeinate.watcher.systemWillSleep then
+    local output = hs.audiodevice.defaultOutputDevice()
+    output:setMuted(true)
+  end
+end
+
+lockSleepMuteWatcher = hs.caffeinate.watcher.new(muteOnLockOrSleep)
+lockSleepMuteWatcher:start()
+
+
+-- Function to quit WhatsApp
+local function quitWhatsApp()
+    hs.application.get("WhatsApp"):kill()
+end
+
+-- Trigger on system will sleep or screen locked
+local sleepWatcher = hs.caffeinate.watcher.new(function(event)
+    if event == hs.caffeinate.watcher.systemWillSleep
+        -- or event == hs.caffeinate.watcher.screensDidLock
+        -- or event == hs.caffeinate.watcher.sessionDidResignActive
+        then
+        quitWhatsApp()
+    end
+end)
+
+sleepWatcher:start()
+
+
+
 --------------------------------------------------------------------------------
 -- Final Notification
 --------------------------------------------------------------------------------
 
 hs.alert.show("Hammerspoon config loaded!")
-
