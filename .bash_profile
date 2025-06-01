@@ -14,7 +14,7 @@ _add_to_path() {
     export PATH
 }
 
-_add_to_path "$(brew --prefix)/anaconda3/bin"
+# _add_to_path "$(brew --prefix)/anaconda3/bin"
 
 _add_to_path "$HOME/.local/bin"
 chmod +x $HOME/.local/bin/*
@@ -27,3 +27,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 if [ -f "$HOME/.bashrc" ]; then
         . "$HOME/.bashrc"
 fi
+
+# Created by `pipx` on 2025-05-15 17:39:46
+export PATH="$PATH:/Users/rahulkumar/Library/Python/3.11/bin"

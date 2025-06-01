@@ -6,6 +6,22 @@ case $- in
 *) return ;;
 esac
 
+eval "$(fzf --bash)"
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind ctrl-u:page-up,ctrl-d:page-down"
+
+export FZF_CTRL_R_OPTS="
+                      --preview 'echo {}' --preview-window up:3:hidden:wrap
+                      --bind 'ctrl-y:execute-silent(echo -n {2..} | $copy)'
+                      --header 'Press CTRL-Y to copy command into clipboard'"
+
+export FZF_CTRL_T_OPTS="
+                    --walker-skip .git,node_modules,target
+                    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+export FZF_COMPLETION_TRIGGER='**'
+export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+
 # ---------------------- local utility functions ---------------------
 
 _have() { type "$1" &>/dev/null; }
@@ -142,3 +158,6 @@ source prompt_setup.sh # source PS1
 source docker-completion.sh
 source git-completion.sh
 
+
+# Created by `pipx` on 2025-05-15 17:39:46
+export PATH="$PATH:/Users/rahulkumar/Library/Python/3.11/bin"

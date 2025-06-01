@@ -281,3 +281,87 @@ AI agent refers to a system or program that can autonomously complete tasks on b
 
 More autonomous, connected and sophisticated than AI assistants, AI agents can encompass a wide range of functions beyond NLP. 
 These include decision-making, problem-solving, interacting with external environments and executing actions.
+
+
+# Layers
+## Linear
+
+The linear layer is like a fully connected layer that takes the input vector and transforms it by applying a learned weighted sum plus bias:
+
+$$
+y = Wx + b
+$$
+
+
+## Conv2D Notes
+
+- **Filter:** small matrix (e.g., 3×3)  
+- Slides over input image or feature map  
+- At each position (i, j), calculates:  
+  \[
+  y[i, j] = \sum_k (m[k] \times x[i + k_{row}, j + k_{col}]) + bias
+  \]  
+- Output \(y\) is called the **feature map**  
+- Feature map shows where the filter pattern matches the input  
+- Filter weights (\(m\)) and bias are **learnable parameters**, adjusted during training  
+- Helps the model detect patterns like edges, shapes, and objects step-by-step
+
+## BatchNorm
+BatchNorm normalizes the inputs — it takes the input values and:
+
+Centers them → by subtracting the mean
+
+Scales them → by dividing by the standard deviation (square root of variance)
+
+
+
+
+Here’s a simple explanation of **ReLU** and why it’s used:
+
+---
+
+### What is ReLU?
+
+* ReLU stands for **Rectified Linear Unit**.
+* It’s a function applied to each number in the input.
+* It replaces every negative value with zero and keeps positive values as they are.
+* Mathematically:
+
+  $$
+  \text{ReLU}(x) = \max(0, x)
+  $$
+
+---
+
+### Why do we introduce ReLU?
+
+* Adds **non-linearity** to the model so it can learn complex patterns.
+* Helps the network **train faster** and reduces the chance of vanishing gradients (where the model stops learning).
+* Simple and efficient to compute.
+
+
+Adding **non-linearity** means making the model able to understand and learn things that aren’t just straight lines or simple patterns.
+
+Without ReLU, the model can only make decisions based on simple, straight-line math — which limits what it can learn.
+
+With ReLU, the model can combine lots of simple things in different ways to understand more complicated, real-world patterns like faces, voices, or handwriting.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## What is AdaptiveAvgPool2d?
+It’s a layer that reduces the size of an input feature map by averaging values inside fixed regions.
+
+Unlike normal average pooling, you don’t specify the size of the pooling window — instead, you specify the output size you want.
+
+The layer automatically figures out how big each pooling region should be to produce that output size.
+
+It works on 2D inputs like images or feature maps.
+
+
+
+
+machine learning 
+data -> number -> find pattern in number
+
+deep learning
+when data is structured

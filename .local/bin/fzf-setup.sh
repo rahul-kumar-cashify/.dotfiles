@@ -48,33 +48,33 @@ fi
 # }
 # complete -o bashdefault -o dirnames -o nospace -F _fzf_complete_cd_notrigger cd
 
-_fzf_complete_ls_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_path_completion
-}
-complete -o default -F _fzf_complete_ls_notrigger ls
-
-_fzf_complete_cp_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_path_completion
-}
-complete -o default -F _fzf_complete_cp_notrigger cp
-
-_fzf_complete_mv_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_path_completion
-}
-complete -o default -F _fzf_complete_mv_notrigger mv
-
-_fzf_complete_rm_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_path_completion
-}
-complete -o default -F _fzf_complete_rm_notrigger rm
-
-_fzf_complete_cat_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_path_completion
-}
-complete -o default -F _fzf_complete_cat_notrigger cat
-
-_fzf_complete_ssh_notrigger() {
-  FZF_COMPLETION_TRIGGER='' _fzf_host_completion
-}
-complete -F _fzf_complete_ssh_notrigger ssh
-
+# _fzf_complete_ls_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
+# }
+# complete -o default -F _fzf_complete_ls_notrigger ls
+#
+# _fzf_complete_cp_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
+# }
+# complete -o default -F _fzf_complete_cp_notrigger cp
+#
+# _fzf_complete_mv_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
+# }
+# complete -o default -F _fzf_complete_mv_notrigger mv
+#
+# _fzf_complete_rm_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
+# }
+# complete -o default -F _fzf_complete_rm_notrigger rm
+#
+# _fzf_complete_cat_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_path_completion
+# }
+# complete -o default -F _fzf_complete_cat_notrigger cat
+#
+# _fzf_complete_ssh_notrigger() {
+#   FZF_COMPLETION_TRIGGER='' _fzf_host_completion
+# }
+# complete -F _fzf_complete_ssh_notrigger ssh
+#

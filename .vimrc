@@ -28,7 +28,10 @@ set noerrorbells                " Don't beep
 set visualbell t_vb=            " Turn off error beep/flash
 
 " Show location settings
-set cursorline                  " Highlight the current line
+" Set the background color of the current line to a lighter color
+highlight CursorLine ctermbg=lightgreen guibg=lightgray
+
+" set cursorline                  " Highlight the current line
 set ruler                       " Show the current row and column
 set showmode                    " Display current modes
 set number                      " Enable line numbers
@@ -93,9 +96,8 @@ fun! ToggleFold()
 endfun
 
 " Theme settings
-colorscheme desert
-autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
-autocmd vimenter * hi EndOfBuffer guibg=NONE ctermbg=NONE
+" autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
+" autocmd vimenter * hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " Key mappings
 nnoremap <leader>x :bd<CR>      " Quickly close the current window
@@ -156,10 +158,10 @@ nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 
 " Buffers: Switch buffers
-nnoremap <S-Tab> :bprevious<CR>
-nnoremap <Tab> :bnext<CR>
-nnoremap [b :bprevious<CR>
-nnoremap ]b :bnext<CR>
+" nnoremap <S-Tab> :bprevious<CR>
+" nnoremap <Tab> :bnext<CR>
+" nnoremap [b :bprevious<CR>
+" nnoremap ]b :bnext<CR>
 
 " Normal mode: Clear highlights
 nnoremap <Esc> :noh<CR>
@@ -167,4 +169,16 @@ nnoremap <Esc> :noh<CR>
 " Normal mode: Close buffer
 nnoremap <leader>x :bd<CR>
 
+" --- .vimrc ---
+
+" --- Cursor Settings ---
+" Set cursor appearance
+" set guicursor=n:block      " Normal mode: block cursor
+" set guicursor=i:ver100     " Insert mode: vertical bar (|) cursor
+
+" --- File Explorer ---
+" Map <C-e> to open the netrw file explorer
+nnoremap <C-e> :Explore<CR>
+
+" --- End of .vimrc ---
 

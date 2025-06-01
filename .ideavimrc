@@ -1,48 +1,76 @@
+" Source vimrc (check path, '~/.vimrc' likely)
 source ~/.vimrc
 
+" Enable surround plugin
 set surround
 
-" install KJump
-nmap ss :action KJumpAction.Word0<CR>
-
-"enable nerdtree
-set NERDTree
-map <C-e> :NERDTreeToggle<CR>
+" Matchpairs adjustment
 set matchpairs-={:}
 
-" Code formatting and navigation
-map <leader>fm :action ReformatCode<CR>
+" === Navigation and Editing ===
+
+" KJump word navigation
+nmap ss :action KJumpAction.Word0<CR>
+
+" Caret movements in Insert mode
+imap <C-e> <Esc>:action EditorLineEnd<CR>
+imap <C-a> <Esc>:action EditorMoveLineStart<CR>
+
+
+" Copilot actions
+imap <C-]> <Esc>:action copilot.applyInlaysNextWord<CR>
+nmap <leader>cc :action github.copilot.inline.action<CR>
+vmap <leader>cc :action github.copilot.inline.action<CR>
+
+" Select current file in Project View
+nnoremap <C-f> :action SelectInProjectView<CR>
+
+" === Project / File / Symbol Navigation ===
+
+" Spotless code formatting
+nmap <leader>fm :execute "action com.github.ragurney.spotless.actions.ReformatFileAction"<CR>
+
+" Bookmarks
+nmap <leader>hh :action ShowBookmarks<CR>
+
+" Rename symbol
+nmap <leader>rn :action RenameElement<CR>
+
+" Goto file, class, and search in path
 map <leader>ff :action GotoFile<CR>
 map <leader>fc :action GotoClass<CR>
 map <leader>lg :action FindInPath<CR>
 
-
+" Generate code
 nmap <leader>ca :action Generate<CR>
 
-" Reference Search
+" Reference search
 map gr :action FindUsages<CR>
 map gd :action GotoDeclaration<CR>
-
-"QuickDefinition legacy stuff
-map gD :action QuickImplementations<CR>
+map gD :action QuickImplementations<CR>  " Quick definition (legacy)
 nnoremap gi :action GotoImplementation<CR>
 
-" set commentary
+" Comments
 map gc :action CommentByLineComment<CR>
 map gb :action CommentByBlockComment<CR>
 
-" View Problems
+" === Problems & Fixes ===
+
+" View problems/errors
 map <leader>dd :action ShowErrorsInProject<CR>
-" View Problems and Focus Editor
 map <leader>dl :action ShowErrorsInProject<CR>
 
-" Quick Fix
+" Quick fix actions
 map <leader>F :action ShowIntentionActions<CR>
 
-"Marker
+" Navigate errors
 map ]d :action GotoNextError<CR>
 map [d :action GotoPreviousError<CR>
 
-" Fold
-:set foldenable
+" === Clipboard ===
 
+" Copy to clipboard with leader y
+nmap <leader>y :action EditorCopy<CR>
+
+" === Folding ===
+set foldenable

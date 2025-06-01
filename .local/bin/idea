@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/sh
 
 
 open -na "IntelliJ IDEA CE.app" --args "$@"
