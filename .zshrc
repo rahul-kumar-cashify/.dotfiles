@@ -12,7 +12,6 @@ zinit light-mode for @sindresorhus/pure
 zinit light-mode for zdharma-continuum/fast-syntax-highlighting
 zinit light-mode for zsh-users/zsh-autosuggestions
 zinit light-mode for ael-code/zsh-colored-man-pages
-zinit light-mode for jeffreytse/zsh-vi-mode
 
 # ========= Completion System (Fast & Lazy) =========
 zinit ice wait lucid atinit"autoload -Uz compinit; compinit -C"
@@ -64,16 +63,28 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt SHARE_HISTORY
 
+
+
+# DO NOT CHANGE SEQUENCE
+export ZVM_INIT_MODE=sourcing
+export ZVM_LAZY_KEYBINDINGS=false
+zinit light-mode for jeffreytse/zsh-vi-mode
+# DO NOT CHANGE SEQUENCE
+
+
 # ========= Tmux Auto-Attach =========
 _tmux() {
-  if command -v tmux &> /dev/null && [[ -n $PS1 ]] && [[ -z "$TMUX" ]] && [[ "$TERM" != screen* ]] && [[ "$TERM" != tmux* ]]; then
-    exec tmux attach || tmux new
-  fi
+    if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+        tmux a -t default || exec tmux new -s default;
+    fi
 }
 bindkey -s '^b' '_tmux\n'
+# bindkey  '^b' _tmux do not use this does not work
 
-# ========= Optional Custom Key =========
-bindkey -s '^f' './fzf.sh\n'  # Make sure fzf.sh exists or change this to a real command
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
 
 # ========= Editor Setup =========
 if command -v nvim &> /dev/null; then
