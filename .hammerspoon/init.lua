@@ -1,7 +1,6 @@
 -- Reference Hammerspoon
 hs = hs
 
-
 local spoonDir = os.getenv("HOME") .. "/.hammerspoon/Spoons"
 local spoonInstallPath = spoonDir .. "/SpoonInstall.spoon"
 local spoonZipPath = spoonInstallPath .. ".zip"
@@ -55,13 +54,13 @@ function bindAppLaunch(mods, key, appName)
 end
 
 bindAppLaunch({ "cmd" }, "1", "WezTerm")
-bindAppLaunch({ "cmd" }, "2", "IntelliJ IDEA CE")
+bindAppLaunch({ "cmd" }, "2", "IntelliJ IDEA")
 bindAppLaunch({ "cmd" }, "3", "Google Chrome")
 bindAppLaunch({ "cmd" }, "4", "Postman")
 bindAppLaunch({ "cmd" }, "5", "dbeaver")
 bindAppLaunch({ "cmd" }, "6", "visual studio code")
-bindAppLaunch({ "cmd" }, "7", "")
-bindAppLaunch({ "cmd" }, "8", "tell Finder to reopen activate")
+bindAppLaunch({ "cmd" }, "7", "visual studio code")
+bindAppLaunch({ "cmd" }, "8", "notion")
 bindAppLaunch({ "cmd" }, "9", "Slack")
 
 -- Reopen Finder
@@ -112,27 +111,6 @@ spoon.SpoonInstall:andUse("WindowHalfsAndThirds", {
 })
 
 --------------------------------------------------------------------------------
--- Clipboard Manager
---------------------------------------------------------------------------------
-
-spoon.SpoonInstall:andUse("ClipboardTool", {
-	config = {
-		deduplicate = true,
-		display_max_length = 100,
-		hist_size = 200,
-		honor_ignoredidentifiers = false,
-		show_copied_alert = false,
-		paste_on_select = false,
-	},
-	start = true,
-})
-
--- Toggle Clipboard History
-hs.hotkey.bind({ "cmd", "shift" }, "V", function()
-	spoon.ClipboardTool:toggleClipboard()
-end)
-
---------------------------------------------------------------------------------
 -- Toggle Dark Mode
 --------------------------------------------------------------------------------
 
@@ -153,19 +131,6 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", {
 	start = true,
 })
 
-function muteOnLockOrSleep(eventType)
-  if eventType == hs.caffeinate.watcher.screensDidLock
-      or eventType == hs.caffeinate.watcher.sessionDidResignActive
-      or eventType == hs.caffeinate.watcher.systemWillSleep then
-    local output = hs.audiodevice.defaultOutputDevice()
-    output:setMuted(true)
-  end
-end
-
-lockSleepMuteWatcher = hs.caffeinate.watcher.new(muteOnLockOrSleep)
-lockSleepMuteWatcher:start()
-
-
 -- Function to quit WhatsApp
 local function quitWhatsApp()
     hs.application.get("WhatsApp"):kill()
@@ -182,8 +147,6 @@ local sleepWatcher = hs.caffeinate.watcher.new(function(event)
 end)
 
 sleepWatcher:start()
-
-
 
 --------------------------------------------------------------------------------
 -- Final Notification

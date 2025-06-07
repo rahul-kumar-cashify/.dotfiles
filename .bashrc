@@ -8,6 +8,8 @@ esac
 
 eval "$(fzf --bash)"
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind ctrl-u:page-up,ctrl-d:page-down"
 
 export FZF_CTRL_R_OPTS="
@@ -161,3 +163,5 @@ source git-completion.sh
 
 # Created by `pipx` on 2025-05-15 17:39:46
 export PATH="$PATH:/Users/rahulkumar/Library/Python/3.11/bin"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

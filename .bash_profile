@@ -30,3 +30,7 @@ fi
 
 # Created by `pipx` on 2025-05-15 17:39:46
 export PATH="$PATH:/Users/rahulkumar/Library/Python/3.11/bin"
+source <(carapace _carapace)
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
