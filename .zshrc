@@ -25,6 +25,7 @@ zi ice lucid wait as'program' has'git' \
 zi light paulirish/git-open
 
 zi snippet OMZL::clipboard.zsh
+zi snippet https://github.com/matthieusb/zsh-sdkman/blob/master/zsh-sdkman.plugin.zsh
 
 # ========= FZF Enhancements =========
 zinit ice lucid wait
