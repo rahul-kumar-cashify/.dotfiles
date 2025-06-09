@@ -74,17 +74,43 @@ zinit light-mode for jeffreytse/zsh-vi-mode
 
 
 # ========= Tmux Auto-Attach =========
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+  tmux attach-session -t default || tmux new-session -s default
+fi
+
 _tmux() {
     if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
         tmux a -t default || exec tmux new -s default;
     fi
 }
-bindkey -s '^b' '_tmux\n'
-# bindkey  '^b' _tmux do not use this does not work
+# bindkey -s '^b' '_tmux\n'
 
-autoload -Uz edit-command-line
+# ============================
+# 🛠 Bash-style Ctrl+X Ctrl+E for zsh
+# This block enables the 'edit-and-execute-command' behavior
+# similar to bash. It allows editing the current line in $EDITOR
+# and then auto-executes the command after saving.
+# DO NOT REMOVE unless you want to disable this behavior.
+# ============================
+
+# Load the default edit-command-line widget
+autoload -U edit-command-line
 zle -N edit-command-line
-bindkey "^X^E" edit-command-line
+
+# Define a custom widget that edits and then executes the command
+function edit-and-execute-command-zsh {
+  zle edit-command-line   # Open in $EDITOR
+  zle accept-line         # Execute after saving
+}
+
+# Register the custom widget with zle
+zle -N edit-and-execute-command-zsh
+
+# Bind Ctrl+X Ctrl+E to this custom widget
+bindkey '^X^E' edit-and-execute-command-zsh
+
+# Set your preferred editor (vim, nano, or "code --wait" for VSCode)
+export EDITOR=vim
 
 
 # ========= Editor Setup =========
