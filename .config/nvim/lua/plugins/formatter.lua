@@ -7,6 +7,8 @@ return {
 				"prettier",
 				"prettierd",
 				"black",
+				"isort",
+				"autopep8",
 			},
 		},
 	},
@@ -19,7 +21,7 @@ return {
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
-					python = { "isort", "black" },
+					python = { "autopep8", "black", "isort", stop_after_first = true },
 					javascript = { "prettierd", "prettier", stop_after_first = true },
 					typescript = { "prettierd", "prettier", stop_after_first = true },
 					html = { "prettierd", "prettier", stop_after_first = true },

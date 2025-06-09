@@ -26,7 +26,7 @@ return {
 				ensure_installed = {
 					"lua_ls", --  Lua
 					"bashls", --  Bash
-					"pyright", --  Python
+					"basedpyright", --  Python
 					"ts_ls", --  JS/TS
 					"yamlls", --  YAML
 					"dockerls", --  Docker
@@ -37,11 +37,27 @@ return {
 					"vimls", --  Vimscript
 					"tailwindcss", --  TailwindCSS
 					"gradle_ls", --  Gradle
-                    "ast_grep"
+					"ast_grep",
 				},
 				handlers = {
 					function(server_name)
 						require("lspconfig")[server_name].setup({ capabilities = capabilities })
+					end,
+
+					--  Custom handler for basedpyright
+					basedpyright = function()
+						require("lspconfig").basedpyright.setup({
+							settings = {
+								basedpyright = {
+									analysis = {
+										diagnosticMode = "openFilesOnly",
+										inlayHints = {
+											callArgumentNames = true,
+										},
+									},
+								},
+							},
+						})
 					end,
 				},
 			})
