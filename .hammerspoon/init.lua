@@ -59,14 +59,11 @@ bindAppLaunch({ "cmd" }, "3", "Google Chrome")
 bindAppLaunch({ "cmd" }, "4", "Postman")
 bindAppLaunch({ "cmd" }, "5", "dbeaver")
 bindAppLaunch({ "cmd" }, "6", "visual studio code")
-bindAppLaunch({ "cmd" }, "7", "visual studio code")
+bindAppLaunch({ "cmd" }, "7", "pycharm ce")
 bindAppLaunch({ "cmd" }, "8", "notion")
 bindAppLaunch({ "cmd" }, "9", "Slack")
 
--- Reopen Finder
-hs.hotkey.bind({ "cmd" }, "0", function()
-	hs.osascript.applescript('tell application "Finder" to reopen activate')
-end)
+hs.alert.show("Hyper Key: CapsLock+Space")
 
 --------------------------------------------------------------------------------
 -- System Volume & Brightness Controls
