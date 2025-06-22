@@ -63,7 +63,11 @@ bindAppLaunch({ "cmd" }, "7", "pycharm ce")
 bindAppLaunch({ "cmd" }, "8", "notion")
 bindAppLaunch({ "cmd" }, "9", "Slack")
 
-hs.alert.show("Hyper Key: CapsLock+Space")
+-- Reopen Finder
+hs.hotkey.bind({ "cmd" }, "0", function()
+	hs.osascript.applescript('tell application "Finder" to reopen activate')
+end)
+
 
 --------------------------------------------------------------------------------
 -- System Volume & Brightness Controls
@@ -127,6 +131,11 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", {
 	},
 	start = true,
 })
+
+
+spoon.SpoonInstall:andUse("VimMode", {
+})
+
 
 -- Function to quit WhatsApp
 local function quitWhatsApp()

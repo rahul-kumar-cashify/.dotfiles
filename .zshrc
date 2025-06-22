@@ -33,19 +33,21 @@ zinit snippet OMZP::fzf
 zinit light-mode for Aloxaf/fzf-tab
 
 # ========= FZF Config =========
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --layout=reverse --height=40% --bind ctrl-u:page-up,ctrl-d:page-down"
-
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_R_OPTS="
   --preview 'echo {}' --preview-window up:3:hidden:wrap
   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)'
   --header 'Press CTRL-Y to copy command into clipboard'"
+
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --layout=reverse --height=40% --bind ctrl-u:page-up,ctrl-d:page-down"
 
 export FZF_CTRL_T_OPTS="
   --walker-skip .git,node_modules,target
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 # ========= fzf-tab Styles =========
-zstyle ':completion:*' fzf-tab '--preview=cat {}'
+zstyle ':completion:*' fzf-tab '--preview=bat {}'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'find ${(Q)realpath} -maxdepth 2 -print 2>/dev/null | ls -la --color=always'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
@@ -53,24 +55,27 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 zinit light-mode for changyuheng/zsh-interactive-cd
 
 # ========= History & Productivity =========
-zinit light-mode for zdharma-continuum/history-search-multi-word
+# zinit ice wait as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
+#     atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
+#     atpull"%atclone" src"init.zsh"
+# zinit light atuinsh/atuin
+# bindkey '^r' atuin-search
+
 
 # ========= History Settings =========
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-
-setopt HIST_IGNORE_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt SHARE_HISTORY
+# HISTFILE=~/.zsh_history
+# HISTSIZE=10000
+# SAVEHIST=10000
+#
+# setopt HIST_IGNORE_DUPS
+# setopt HIST_FIND_NO_DUPS
+# setopt SHARE_HISTORY
 
 
 
 # DO NOT CHANGE SEQUENCE
-export ZVM_INIT_MODE=sourcing
-export ZVM_LAZY_KEYBINDINGS=false
-zinit light-mode for jeffreytse/zsh-vi-mode
-# DO NOT CHANGE SEQUENCE
+# export ZVM_INIT_MODE=sourcing
+# export ZVM_LAZY_KEYBINDINGS=false
 
 
 # ========= Tmux Auto-Attach =========
@@ -83,35 +88,6 @@ _tmux() {
         tmux a -t default || exec tmux new -s default;
     fi
 }
-# bindkey -s '^b' '_tmux\n'
-
-# ============================
-# 🛠 Bash-style Ctrl+X Ctrl+E for zsh
-# This block enables the 'edit-and-execute-command' behavior
-# similar to bash. It allows editing the current line in $EDITOR
-# and then auto-executes the command after saving.
-# DO NOT REMOVE unless you want to disable this behavior.
-# ============================
-
-# Load the default edit-command-line widget
-autoload -U edit-command-line
-zle -N edit-command-line
-
-# Define a custom widget that edits and then executes the command
-function edit-and-execute-command-zsh {
-  zle edit-command-line   # Open in $EDITOR
-  zle accept-line         # Execute after saving
-}
-
-# Register the custom widget with zle
-zle -N edit-and-execute-command-zsh
-
-# Bind Ctrl+X Ctrl+E to this custom widget
-bindkey '^X^E' edit-and-execute-command-zsh
-
-# Set your preferred editor (vim, nano, or "code --wait" for VSCode)
-export EDITOR=vim
-
 
 # ========= Editor Setup =========
 if command -v nvim &> /dev/null; then
@@ -161,6 +137,12 @@ alias gla="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Crese
 # ========= Terminal Settings =========
 export TERM=xterm-256color
 export ZSH_TMUX_TERM="screen-256color"
+
+bindkey -e  # Emacs mode
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
 
 # ========= Ensure SDKMAN is last =========
 # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
